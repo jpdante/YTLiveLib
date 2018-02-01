@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTLiveLib", "YTLiveLib\YTLiveLib.csproj", "{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44ED1D4D-09ED-4081-82FC-F843BB4CB630}
+	EndGlobalSection
+EndGlobal

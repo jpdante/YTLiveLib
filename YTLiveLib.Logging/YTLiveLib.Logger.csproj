@@ -5,10 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Classes\API\" />
-    <Folder Include="Classes\Client\" />
-    <Folder Include="Internal\" />
-    <Folder Include="API\" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YTLiveLib\YTLiveLib.csproj" />
   </ItemGroup>
 
 </Project>

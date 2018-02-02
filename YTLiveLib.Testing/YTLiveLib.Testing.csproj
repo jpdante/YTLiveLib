@@ -6,7 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="log4net.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YTLiveLib.Logging\YTLiveLib.Logger.csproj" />
+    <ProjectReference Include="..\YTLiveLib\YTLiveLib.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,8 @@
+language: csharp
+solution: YTLiveLib.sln
+install:
+  - nuget restore YTLiveLib.sln
+mono: none
+dotnet: 2.0
+script:
+ - dotnet restore

@@ -9,7 +9,7 @@ namespace YTLiveLib.Logger {
         public LogLevel Level { get; set; }
 
         public Log4NetLogger() {
-            Level = LogLevel.All;
+            Level = LogLevel.None;
         }
 
         public void Log(LogEvent evt) {

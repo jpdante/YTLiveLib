@@ -11,13 +11,14 @@ namespace YTLiveLib.Logger {
 
         public DateTime RightNow => DateTime.Now;
 
-        public ConsoleLogger() : this(LogLevel.All) { }
+        public ConsoleLogger() : this(LogLevel.Debug) { }
 
         public ConsoleLogger(LogLevel level) {
             Level = level;
         }
 
         public void Log(LogEvent evt) {
+            Console.WriteLine("Logging: " + (evt.Level > Level));
             if (evt.Level > Level) return;
             Console.WriteLine(CreateMessage(evt));
         }

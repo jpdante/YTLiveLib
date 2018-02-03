@@ -36,6 +36,6 @@ namespace YTLiveLib.Logger {
         Warn = 3,
         Error = 2,
         Fatal = 1,
-        All = 0
+        None = 0
     }
 }

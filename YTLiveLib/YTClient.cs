@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using YTLiveLib.Classes.Client;
+using YTLiveLib.Classes.Enum;
 using YTLiveLib.Events;
 using YTLiveLib.Internal;
 using YTLiveLib.Logger;
@@ -38,26 +40,40 @@ namespace YTLiveLib {
         }
 
         #region Events
-        public delegate void OnConnect(object sender, OnConnectArgs e);
+        public delegate void OnConnect(object sender, ConnectArgs e);
         public event OnConnect OnConnectEvent;
 
-        public delegate void OnDisconnect(object sender, OnDisconnectArgs e);
+        public delegate void OnDisconnect(object sender, DisconnectArgs e);
         public event OnDisconnect OnDisconnectEvent;
 
-        public delegate void OnReceiveMessage(object sender, OnReceiveMessageArgs e);
+        public delegate void OnReceiveMessage(object sender, ReceiveMessageArgs e);
         public event OnReceiveMessage OnReceiveMessageEvent;
 
-        private void YTClient_OnReceiveMessageEvent(object sender, OnReceiveMessageArgs e) {
+        private void YTClient_OnReceiveMessageEvent(object sender, ReceiveMessageArgs e) {
 
         }
-        private void YTClient_OnConnectEvent(object sender, OnConnectArgs e) {
+        private void YTClient_OnConnectEvent(object sender, ConnectArgs e) {
             Log(LogLevel.Info, "Connected to GoogleAPI!");
         }
-        private void YTClient_OnDisconnectEvent(object sender, OnDisconnectArgs e) {
+        private void YTClient_OnDisconnectEvent(object sender, DisconnectArgs e) {
             Log(LogLevel.Info, "Disconnected from GoogleAPI!");
         }
-        private void Channel_OnReceiveMessageEvent(object sender, OnReceiveMessageArgs e) {
+        private void Channel_OnReceiveMessageEvent(object sender, ReceiveMessageArgs e) {
             OnReceiveMessageEvent(sender, e);
+        }
+        #endregion
+
+        #region APIMethods    
+        public JoinedChannel JoinChannel(string chatID) {
+            JoinedChannel channel = new JoinedChannel(youTubeAPI, chatID, ChatUpdateDelay.Normal);
+            channel.StartListening();
+            channel.OnReceiveMessageEvent += Channel_OnReceiveMessageEvent;
+            JoinedChannels.Add(channel);
+            return channel;
+        }
+
+        public async Task<string> GetChatID(string videoID) {
+            return await youTubeAPI.getStreamChatID(videoID);
         }
         #endregion
 
@@ -65,24 +81,7 @@ namespace YTLiveLib {
         public async void Connect() {
             Log(LogLevel.Info, "Connecting to GoogleAPI...");
             youTubeAPI.Init(appName, googleCredentials);
-            OnConnectEvent(this, new OnConnectArgs());
-        }
-
-        public async void JoinStreamChannel(string search) {
-            //Log(LogLevel.Info, $"Searching for \"{search}\"");
-            //string videoid = await youTubeAPI.getVideo(search);
-            //Log(LogLevel.Info, $"Video ID: \"{videoid}\"");
-            //Log(LogLevel.Info, $"Getting StreamChat...");
-
-            string videoid = "kXagVYEg1Mo";
-
-            string chatid = await youTubeAPI.getStreamChatID(videoid);
-            Log(LogLevel.Info, $"Chat ID: \"{chatid}\"");
-            Log(LogLevel.Info, $"Adding to MessageListener...");
-            JoinedChannel channel = new JoinedChannel(youTubeAPI, chatid);
-            channel.StartListening();
-            channel.OnReceiveMessageEvent += Channel_OnReceiveMessageEvent;
-            JoinedChannels.Add(channel);
+            OnConnectEvent(this, new ConnectArgs());
         }
 
         public void RegisterLogger(ILogger logger) {
@@ -93,7 +92,7 @@ namespace YTLiveLib {
 
         public async void Disconnect() {
             if (Debug) Log(LogLevel.Info, "Disconnecting from GoogleAPI...");
-            OnDisconnectEvent(this, new OnDisconnectArgs());
+            OnDisconnectEvent(this, new DisconnectArgs());
         }
         #endregion
 

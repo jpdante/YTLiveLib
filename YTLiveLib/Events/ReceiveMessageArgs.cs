@@ -4,10 +4,10 @@ using System.Text;
 using YTLiveLib.Classes.API;
 
 namespace YTLiveLib.Events {
-    public class OnReceiveMessageArgs {
+    public class ReceiveMessageArgs : EventArgs {
         public ChatMessage Message;
 
-        public OnReceiveMessageArgs(ChatMessage message) {
+        public ReceiveMessageArgs(ChatMessage message) {
             Message = message;
         }
     }

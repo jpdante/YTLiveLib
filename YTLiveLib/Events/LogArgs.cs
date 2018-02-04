@@ -3,6 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace YTLiveLib.Events {
-    public class OnSentMessageArgs {
+    public class OnLogArgs : EventArgs {
     }
 }

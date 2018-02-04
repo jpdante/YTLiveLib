@@ -8,6 +8,7 @@ namespace YTLiveLib.Classes.API {
         public string ChannelID;
         public string ChannelURL;
         public string ProfileImageURL;
+        public string ModeratorID;
         public bool IsChatModerator;
         public bool IsChatOwner;
         public bool IsChatSponsor;

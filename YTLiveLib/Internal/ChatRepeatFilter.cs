@@ -7,7 +7,7 @@ using YTLiveLib.Events;
 namespace YTLiveLib.Internal {
     public class ChatRepeatFilter {
 
-        public delegate void OnReceiveMessage(object sender, OnReceiveMessageArgs e);
+        public delegate void OnReceiveMessage(object sender, ReceiveMessageArgs e);
         public event OnReceiveMessage OnReceiveMessageEvent;
 
         public bool FirstInit;
@@ -17,7 +17,7 @@ namespace YTLiveLib.Internal {
             FirstInit = true;
         }
 
-        public void AddMessages(List<ChatMessage> messages) {
+        public void FixMessages(List<ChatMessage> messages) {
             if(AllMessages == null) {
                 FirstInit = true;
                 AllMessages = new List<string>();
@@ -32,7 +32,7 @@ namespace YTLiveLib.Internal {
             }
             foreach(ChatMessage message in messages) {
                 if(!AllMessages.Contains($"{message.PublishedAtRaw};{message.ChannelUser.ChannelID};{message.Message}")) {
-                    OnReceiveMessageEvent(this, new OnReceiveMessageArgs(message));
+                    OnReceiveMessageEvent(this, new ReceiveMessageArgs(message));
                 }
             }
             AllMessages.Clear();

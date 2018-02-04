@@ -3,6 +3,7 @@ using Google.Apis.Auth.OAuth2.Flows;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,25 +24,62 @@ namespace YTLiveLib.Classes.Client {
             youTubeService = new YouTubeService(new BaseClientService.Initializer { HttpClientInitializer = usercredentials, ApplicationName = appname });
         }
 
-        public async Task<string> getVideo(string search) {
-            var searchListRequest = youTubeService.Search.List("snippet");
-            searchListRequest.Q = search;
-            searchListRequest.MaxResults = 1;
-            var searchListResponse = await searchListRequest.ExecuteAsync();
-            return searchListResponse.Items[0].Id.VideoId;
+        #region LiveChatModerators
+        public async Task<bool> removeModerator(string chatID, string moderatorID) {
+            var response = await youTubeService.LiveChatModerators.Delete(moderatorID).ExecuteAsync();
+            return response != null;
         }
 
-        public async Task<string> getStreamChatID(string videoID) {
-            var listRequest = youTubeService.Videos.List("snippet,contentDetails,statistics,liveStreamingDetails");
-            listRequest.Id = videoID;
-            var result = await listRequest.ExecuteAsync();
-            return result.Items[0].LiveStreamingDetails.ActiveLiveChatId;           
+        public async Task<bool> addModerator(string chatID, ChannelUser channelUser) {
+            LiveChatModerator liveChatModerator = new LiveChatModerator();
+            ChannelProfileDetails channelProfileDetails = new ChannelProfileDetails() {
+                ChannelId = channelUser.ChannelID,
+                ChannelUrl = channelUser.ChannelURL,
+                DisplayName = channelUser.DisplayName,
+                ProfileImageUrl = channelUser.ProfileImageURL
+            };
+            liveChatModerator.Snippet = new LiveChatModeratorSnippet() {
+                LiveChatId = chatID,
+                ModeratorDetails = channelProfileDetails
+            };
+            var response = await youTubeService.LiveChatModerators.Insert(liveChatModerator, "snippet").ExecuteAsync();
+            return response != null;
+        }
+
+        public async Task<List<ChannelUser>> getModerators(string chatID) {
+            var response = await youTubeService.LiveChatModerators.List(chatID, "snippet").ExecuteAsync();
+            List<ChannelUser> moderators = new List<ChannelUser>();
+            foreach (var t in response.Items) {
+                ChannelUser channelUser = new ChannelUser() {
+                    ChannelID = t.Snippet.ModeratorDetails.ChannelId,
+                    ChannelURL = t.Snippet.ModeratorDetails.ChannelUrl,
+                    DisplayName = t.Snippet.ModeratorDetails.DisplayName,
+                    ProfileImageURL = t.Snippet.ModeratorDetails.ProfileImageUrl,
+                    IsChatModerator = true,
+                    ModeratorID = t.Id
+                };
+                moderators.Add(channelUser);
+            }
+            return moderators;
+        }
+        #endregion
+
+        #region LiveChatMessages
+        public async Task<bool> sendChatMessage(string message, string chatID) {
+            LiveChatMessage liveMessage = new LiveChatMessage();
+            liveMessage.Snippet = new LiveChatMessageSnippet() {
+                LiveChatId = chatID,
+                Type = "textMessageEvent",
+                TextMessageDetails = new LiveChatTextMessageDetails() { MessageText = message }
+            };
+            var response = await youTubeService.LiveChatMessages.Insert(liveMessage, "snippet").ExecuteAsync();
+            return response != null;
         }
 
         public async Task<List<ChatMessage>> getChatMessages(string chatID) {
-            var result = await youTubeService.LiveChatMessages.List(chatID, "snippet,authorDetails").ExecuteAsync();
+            var response = await youTubeService.LiveChatMessages.List(chatID, "snippet,authorDetails").ExecuteAsync();
             List<ChatMessage> messages = new List<ChatMessage>();
-            foreach (var t in result.Items) {
+            foreach (var t in response.Items) {
                 ChatMessage message = new ChatMessage() {
                     Type = t.Snippet.Type,
                     DisplayMessage = t.Snippet.DisplayMessage,
@@ -75,5 +113,57 @@ namespace YTLiveLib.Classes.Client {
             }
             return messages;
         }
+        #endregion
+
+        #region SuperChatEvents
+
+        #endregion
+
+        #region Sponsors
+
+        #endregion
+
+        #region Livestreams
+        public async Task<string> getStreamChatID(string videoID) {
+            var listRequest = youTubeService.Videos.List("snippet,contentDetails,statistics,liveStreamingDetails");
+            listRequest.Id = videoID;
+            var result = await listRequest.ExecuteAsync();
+            return result.Items[0].LiveStreamingDetails.ActiveLiveChatId;
+        }
+        #endregion
+
+        #region LiveCuepoints
+
+        #endregion
+
+        #region LiveChatBans
+
+        #endregion
+
+        #region LiveBroadcasts
+
+        #endregion
+
+        #region Search
+        /*public async Task<string> searchFirstVideo(string search) {
+            var searchListRequest = youTubeService.Search.List("snippet");
+            searchListRequest.Q = search;
+            searchListRequest.MaxResults = 1;
+            var searchListResponse = await searchListRequest.ExecuteAsync();
+            return searchListResponse.Items[0].Id.VideoId;
+        }
+
+        public async Task<List<string>> searchVideos(string search) {
+            var searchListRequest = youTubeService.Search.List("snippet");
+            searchListRequest.Q = search;
+            searchListRequest.MaxResults = 1;
+            var searchListResponse = await searchListRequest.ExecuteAsync();
+            return searchListResponse.Items[0].Id.VideoId;
+        }*/
+        #endregion
+
+        #region Videos
+
+        #endregion
     }
 }

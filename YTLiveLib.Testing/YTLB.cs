@@ -9,34 +9,38 @@ namespace YTLiveLib.Testing {
     public class YTLB {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(YTLB));
 
-        private YTClient client;
+        internal YTClient ytClient;
+        private JoinedChannel joinedChannel;
 
         public YTLB(string appname, string clientID, string clientsecret, string refreshtoken) {
-            client = new YTClient(appname, new GoogleCredentials() { ClientID = clientID, ClientSecret = clientsecret, RefreshToken = refreshtoken }, debug: true);
-            client.RegisterLogger(new Log4NetLogger());
-            client.OnConnectEvent += Client_OnConnectEvent;
-            client.OnDisconnectEvent += Client_OnDisconnectEvent;
-            client.OnReceiveMessageEvent += Client_OnReceiveMessageEvent;
+            ytClient = new YTClient(appname, new GoogleCredentials() { ClientID = clientID, ClientSecret = clientsecret, RefreshToken = refreshtoken }, debug: true);
+            ytClient.RegisterLogger(new Log4NetLogger());
+            ytClient.OnConnectEvent += Client_OnConnectEvent;
+            ytClient.OnDisconnectEvent += Client_OnDisconnectEvent;
+            ytClient.OnReceiveMessageEvent += Client_OnReceiveMessageEvent;
         }
 
-        private void Client_OnReceiveMessageEvent(object sender, Events.OnReceiveMessageArgs e) {
-            log.Info($"Received Message: {e.Message.Message}");
+        private void Client_OnReceiveMessageEvent(object sender, Events.ReceiveMessageArgs e) {
+            log.Info($"{e.Message.ChannelUser.DisplayName}: {e.Message.Message}");
+            if(e.Message.Message.Equals("say something", StringComparison.CurrentCultureIgnoreCase)) {
+                joinedChannel.SendMessage("hey, now i can write in chat :D").GetAwaiter().GetResult();
+            }
         }
 
-        private void Client_OnDisconnectEvent(object sender, Events.OnDisconnectArgs e) {
+        private void Client_OnDisconnectEvent(object sender, Events.DisconnectArgs e) {
             
         }
 
-        private void Client_OnConnectEvent(object sender, Events.OnConnectArgs e) {
-            client.JoinStreamChannel("#LIVE 14 - PUBG | Voltando a ORIGEM");
+        private void Client_OnConnectEvent(object sender, Events.ConnectArgs e) {
+
         }
 
         public void Connect() {
-            client.Connect();
+            ytClient.Connect();
         }
 
         public void Disconnect() {
-            client.Disconnect();
+            ytClient.Disconnect();
         }
     }
 }

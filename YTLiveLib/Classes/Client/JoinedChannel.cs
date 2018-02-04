@@ -1,33 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using YTLiveLib.Classes.Enum;
 using YTLiveLib.Events;
 using YTLiveLib.Internal;
+using YTLiveLib.Internal.Events;
 
 namespace YTLiveLib.Classes.Client {
     public class JoinedChannel {
 
-        public delegate void OnReceiveMessage(object sender, OnReceiveMessageArgs e);
+        public delegate void OnReceiveMessage(object sender, ReceiveMessageArgs e);
         public event OnReceiveMessage OnReceiveMessageEvent;
 
-        private YTClient client;
+        public delegate void OnReceiveSuperChat(object sender, ReceiveMessageArgs e);
+        public event OnReceiveSuperChat OnReceiveSuperChatEvent;
+
+        private YouTubeAPI youTubeAPI;
+        private string chatID;
+        private ChatUpdateDelay chatDelay;
 
         public ChatEventsListener chatEventsListener;
         public ChatRepeatFilter chatRepeatFilter;
 
-        public JoinedChannel(YouTubeAPI youTubeAPI, string chatID) {
-            chatEventsListener = new ChatEventsListener(youTubeAPI, chatID);
-            chatEventsListener.OnGetMessagesEvent += ChatEventsListener_OnGetMessagesEvent;
+        public JoinedChannel(YouTubeAPI youTubeapi, string chatid, ChatUpdateDelay delay) {
+            chatDelay = delay;
+            chatID = chatid;
+            youTubeAPI = youTubeapi;
+            chatEventsListener = new ChatEventsListener(youTubeAPI, chatID, delay);
+            chatEventsListener.OnGetChatEvents_Event += ChatEventsListener_OnGetMessagesEvent;
             chatRepeatFilter = new ChatRepeatFilter();
             chatRepeatFilter.OnReceiveMessageEvent += ChatRepeatFilter_OnReceiveMessageEvent;
         }
 
-        private void ChatRepeatFilter_OnReceiveMessageEvent(object sender, OnReceiveMessageArgs e) {
-            OnReceiveMessageEvent(sender, e);
+        public async Task<bool> SendMessage(string message) {
+            return await youTubeAPI.sendChatMessage(message, chatID);
         }
 
-        private void ChatEventsListener_OnGetMessagesEvent(object sender, OnGetMessagesArgs e) {
-            chatRepeatFilter.AddMessages(e.Messages);
+        public void SetChatDelay(ChatUpdateDelay delay) {
+            chatEventsListener.setDelay(delay);
+        }
+
+        private void ChatRepeatFilter_OnReceiveMessageEvent(object sender, ReceiveMessageArgs e) {
+            if(e.Message.Type.Equals("textMessageEvent", StringComparison.CurrentCultureIgnoreCase)) OnReceiveMessageEvent(sender, e);
+            else if (e.Message.Type.Equals("superChatEvent", StringComparison.CurrentCultureIgnoreCase)) OnReceiveSuperChatEvent(sender, e);
+        }
+
+        private void ChatEventsListener_OnGetMessagesEvent(object sender, GetChatEventsArgs e) {
+            chatRepeatFilter.FixMessages(e.Messages);
         }
 
         public void StartListening() {

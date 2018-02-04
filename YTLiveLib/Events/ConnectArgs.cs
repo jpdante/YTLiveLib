@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace YTLiveLib.Events {
-    public class OnJoinChannelArgs {
+    public class ConnectArgs : EventArgs {
 
     }
 }

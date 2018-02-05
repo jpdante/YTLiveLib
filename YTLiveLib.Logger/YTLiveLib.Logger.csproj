@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Version>0.1.0</Version>
+    <Authors>jpdante</Authors>
+    <Company />
+    <Copyright>Copyright (c) 2018 João Pedro</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/jpdante/YTLiveLib/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/jpdante/YTLiveLib</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jpdante/YTLiveLib</RepositoryUrl>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <Description>Enables use of log4net to log YTLiveLib with only 1 line</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YTLiveLib\YTLiveLib.csproj" />
+  </ItemGroup>
+
+</Project>

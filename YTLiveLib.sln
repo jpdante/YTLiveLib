@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTLiveLib", "YTLiveLib\YTLiveLib.csproj", "{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YTLiveLib", "YTLiveLib\YTLiveLib.csproj", "{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{184C0F60-D89B-42F9-BE9E-73E0CB9450F4}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTLiveLib.Logger", "YTLiveLib.Logging\YTLiveLib.Logger.csproj", "{21936FE6-2D6D-4D18-BD4F-3D837116B709}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YTLiveLib.Testing", "YTLiveLib.Testing\YTLiveLib.Testing.csproj", "{C7EB3E06-FB53-4097-AC9E-FBAD3F9EF105}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTLiveLib.Testing", "YTLiveLib.Testing\YTLiveLib.Testing.csproj", "{C7EB3E06-FB53-4097-AC9E-FBAD3F9EF105}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YTLiveLib.Logger", "YTLiveLib.Logger\YTLiveLib.Logger.csproj", "{CE051337-9A7E-4156-9F62-DC197BF167EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,14 +24,14 @@ Global
 		{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{401E0AF8-54AE-46EF-BA4B-D52374F6CD65}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21936FE6-2D6D-4D18-BD4F-3D837116B709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21936FE6-2D6D-4D18-BD4F-3D837116B709}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21936FE6-2D6D-4D18-BD4F-3D837116B709}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21936FE6-2D6D-4D18-BD4F-3D837116B709}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7EB3E06-FB53-4097-AC9E-FBAD3F9EF105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7EB3E06-FB53-4097-AC9E-FBAD3F9EF105}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7EB3E06-FB53-4097-AC9E-FBAD3F9EF105}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7EB3E06-FB53-4097-AC9E-FBAD3F9EF105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE051337-9A7E-4156-9F62-DC197BF167EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE051337-9A7E-4156-9F62-DC197BF167EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE051337-9A7E-4156-9F62-DC197BF167EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE051337-9A7E-4156-9F62-DC197BF167EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

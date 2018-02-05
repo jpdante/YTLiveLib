@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/jpdante/YTLiveLib</RepositoryUrl>
+    <Version>0.2.0</Version>
+    <Authors>jpdante</Authors>
+    <Company />
+    <Description>YTLiveLib is a library to facilitate the current google api for csharp. Supports chat, superchat, users, events and others. Created using C# in .NET Core 2.0</Description>
+    <Copyright>Copyright (c) 2018 João Pedro</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/jpdante/YTLiveLib/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/jpdante/YTLiveLib</PackageProjectUrl>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <FileVersion>0.2.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\YTLiveLib.Logger\YTLiveLib.Logger.csproj" />
     <ProjectReference Include="..\YTLiveLib.Logging\YTLiveLib.Logger.csproj" />
     <ProjectReference Include="..\YTLiveLib\YTLiveLib.csproj" />
   </ItemGroup>

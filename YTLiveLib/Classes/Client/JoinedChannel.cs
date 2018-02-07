@@ -42,8 +42,8 @@ namespace YTLiveLib.Classes.Client {
         }
 
         private void ChatRepeatFilter_OnReceiveMessageEvent(object sender, ReceiveMessageArgs e) {
-            if(e.Message.Type.Equals("textMessageEvent", StringComparison.CurrentCultureIgnoreCase)) OnReceiveMessageEvent(sender, e);
-            else if (e.Message.Type.Equals("superChatEvent", StringComparison.CurrentCultureIgnoreCase)) OnReceiveSuperChatEvent(sender, e);
+            if(e.ChatMessage.Type.Equals("textMessageEvent", StringComparison.CurrentCultureIgnoreCase)) OnReceiveMessageEvent(sender, e);
+            else if (e.ChatMessage.Type.Equals("superChatEvent", StringComparison.CurrentCultureIgnoreCase)) OnReceiveSuperChatEvent(sender, e);
         }
 
         private void ChatEventsListener_OnGetMessagesEvent(object sender, GetChatEventsArgs e) {

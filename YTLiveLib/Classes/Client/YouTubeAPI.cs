@@ -125,7 +125,7 @@ namespace YTLiveLib.Classes.Client {
 
         #region Livestreams
         public async Task<string> getStreamChatID(string videoID) {
-            var listRequest = youTubeService.Videos.List("snippet,contentDetails,statistics,liveStreamingDetails");
+            var listRequest = youTubeService.Videos.List("liveStreamingDetails");
             listRequest.Id = videoID;
             var result = await listRequest.ExecuteAsync();
             return result.Items[0].LiveStreamingDetails.ActiveLiveChatId;
@@ -137,7 +137,56 @@ namespace YTLiveLib.Classes.Client {
         #endregion
 
         #region LiveChatBans
+        public async Task<ChannelBan> addChatBan(string chatID, ChannelUser channelUser, bool permanent = false, ulong time = 300) {
+            LiveChatBan liveChatBan;
+            if (permanent) {
+                liveChatBan = new LiveChatBan() {
+                    Snippet = new LiveChatBanSnippet() {
+                        LiveChatId = chatID,
+                        BannedUserDetails = new ChannelProfileDetails() {
+                            ChannelId = channelUser.ChannelID,
+                            DisplayName = channelUser.DisplayName,
+                            ChannelUrl = channelUser.ChannelURL,
+                            ProfileImageUrl = channelUser.ProfileImageURL
+                        }
+                    }
+                };
+            } else {
+                liveChatBan = new LiveChatBan() {
+                    Snippet = new LiveChatBanSnippet() {
+                        BanDurationSeconds = time,
+                        LiveChatId = chatID,
+                        BannedUserDetails = new ChannelProfileDetails() {
+                            ChannelId = channelUser.ChannelID,
+                            DisplayName = channelUser.DisplayName,
+                            ChannelUrl = channelUser.ChannelURL,
+                            ProfileImageUrl = channelUser.ProfileImageURL
+                        }
+                    }
+                };
+            }
+            var addban = youTubeService.LiveChatBans.Insert(liveChatBan, "snippet");
+            var result = await addban.ExecuteAsync();
+            ChannelBan channelBan = new ChannelBan() {
+                ID = result.Id,
+                Kind = result.Kind,
+                BanDurationSeconds = result.Snippet.BanDurationSeconds ?? 0L,
+                LiveChatID = result.Snippet.LiveChatId,
+                ChannelUser = new ChannelUser() {
+                    ChannelID = result.Snippet.BannedUserDetails.ChannelId,
+                    ChannelURL = result.Snippet.BannedUserDetails.ChannelUrl,
+                    DisplayName = result.Snippet.BannedUserDetails.DisplayName,
+                    ProfileImageURL = result.Snippet.BannedUserDetails.ProfileImageUrl,
+                }
+            };
+            return channelBan;
+        }
 
+        public async Task<bool> removeChatBan(string id) {
+            var addban = youTubeService.LiveChatBans.Delete(id);
+            var result = await addban.ExecuteAsync();
+            return true;
+        }
         #endregion
 
         #region LiveBroadcasts
@@ -151,15 +200,31 @@ namespace YTLiveLib.Classes.Client {
             searchListRequest.MaxResults = 1;
             var searchListResponse = await searchListRequest.ExecuteAsync();
             return searchListResponse.Items[0].Id.VideoId;
-        }
-
-        public async Task<List<string>> searchVideos(string search) {
-            var searchListRequest = youTubeService.Search.List("snippet");
-            searchListRequest.Q = search;
-            searchListRequest.MaxResults = 1;
-            var searchListResponse = await searchListRequest.ExecuteAsync();
-            return searchListResponse.Items[0].Id.VideoId;
         }*/
+
+        public async Task<List<ChannelVideo>> searchVideo(string search, int max_results = 30) {
+            var searchListRequest = youTubeService.Search.List("id,snippet");
+            searchListRequest.Q = search;
+            searchListRequest.MaxResults = max_results;
+            var searchListResponse = await searchListRequest.ExecuteAsync();
+            List<ChannelVideo> videos = new List<ChannelVideo>();
+            foreach(var i in searchListResponse.Items) {
+                videos.Add(new ChannelVideo() {
+                    VideoID = i.Id.VideoId,
+                    VideoPlaylist = i.Id.PlaylistId,
+                    IDKind = i.Id.Kind,
+                    Kind = i.Kind,
+                    ChannelID = i.Snippet.ChannelId,
+                    Title = i.Snippet.Title,
+                    ChannelTitle = i.Snippet.ChannelTitle,
+                    Description = i.Snippet.Description,
+                    PublishedAt = i.Snippet.PublishedAt ?? DateTime.Now,
+                    PublishedAtRaw = i.Snippet.PublishedAtRaw,
+                    LiveBroadcastContent = i.Snippet.LiveBroadcastContent
+                });
+            }
+            return videos;
+        }
         #endregion
 
         #region Videos

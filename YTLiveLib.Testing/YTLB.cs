@@ -21,8 +21,8 @@ namespace YTLiveLib.Testing {
         }
 
         private void Client_OnReceiveMessageEvent(object sender, Events.ReceiveMessageArgs e) {
-            log.Info($"{e.Message.ChannelUser.DisplayName}: {e.Message.Message}");
-            if(e.Message.Message.Equals("say something", StringComparison.CurrentCultureIgnoreCase)) {
+            log.Info($"{e.ChatMessage.ChannelUser.DisplayName}: {e.ChatMessage.Message}");
+            if(e.ChatMessage.Message.Equals("say something", StringComparison.CurrentCultureIgnoreCase)) {
                 joinedChannel.SendMessage("hey, now i can write in chat :D").GetAwaiter().GetResult();
             }
         }

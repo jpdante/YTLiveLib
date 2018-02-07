@@ -49,6 +49,9 @@ namespace YTLiveLib {
         public delegate void OnReceiveMessage(object sender, ReceiveMessageArgs e);
         public event OnReceiveMessage OnReceiveMessageEvent;
 
+        public delegate void OnReceiveSuperChat(object sender, ReceiveMessageArgs e);
+        public event OnReceiveSuperChat OnReceiveSuperChatEvent;
+
         private void YTClient_OnReceiveMessageEvent(object sender, ReceiveMessageArgs e) {
 
         }
@@ -61,12 +64,16 @@ namespace YTLiveLib {
         private void Channel_OnReceiveMessageEvent(object sender, ReceiveMessageArgs e) {
             OnReceiveMessageEvent(sender, e);
         }
+        private void Channel_OnReceiveSuperChatEvent(object sender, ReceiveMessageArgs e) {
+            OnReceiveSuperChatEvent(sender, e);
+        }
         #endregion
 
         #region APIMethods    
         public JoinedChannel JoinChannel(string chatID) {
             JoinedChannel channel = new JoinedChannel(youTubeAPI, chatID, ChatUpdateDelay.Normal);
             channel.StartListening();
+            channel.OnReceiveSuperChatEvent += Channel_OnReceiveSuperChatEvent;
             channel.OnReceiveMessageEvent += Channel_OnReceiveMessageEvent;
             JoinedChannels.Add(channel);
             return channel;

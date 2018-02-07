@@ -5,10 +5,10 @@ using YTLiveLib.Classes.API;
 
 namespace YTLiveLib.Events {
     public class ReceiveMessageArgs : EventArgs {
-        public ChatMessage Message;
+        public ChatMessage ChatMessage;
 
         public ReceiveMessageArgs(ChatMessage message) {
-            Message = message;
+            ChatMessage = message;
         }
     }
 }
